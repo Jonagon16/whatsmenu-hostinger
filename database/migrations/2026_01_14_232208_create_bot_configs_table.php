@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('bot_config', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')
+          ->constrained('users')
+          ->onDelete('cascade');
             
             $table->text('whatsapp_verify_token');
             $table->text('whatsapp_access_token');
