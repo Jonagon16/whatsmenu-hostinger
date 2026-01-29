@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->file(public_path('spa/index.html'));
 });
 
 // Dashboard route moved to controller
@@ -21,5 +21,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('menus', \App\Http\Controllers\MenuController::class);
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
-
 
