@@ -58,10 +58,13 @@ onMounted(async () => {
         
         loading.value = false;
         
+        loading.value = false;
+        
         await nextTick();
         initChart(chartRes.data);
     } catch (error) {
         console.error('Error loading dashboard data', error);
+        alert('Dashboard API Error: ' + (error.response?.data?.message || error.message));
         loading.value = false;
     }
 });

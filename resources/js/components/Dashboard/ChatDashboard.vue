@@ -316,8 +316,9 @@ onMounted(() => {
     // Use the user ID injected from Blade
     const uid = window.Laravel?.user?.id;
     
-    if (uid) {
+    if (uid && window.Echo) {
         console.log(`Listening on private-dashboard.${uid}`);
+        window.Echo.private(`dashboard.${uid}`)
         window.Echo.private(`dashboard.${uid}`)
             .listen('.conversation.created', (e) => {
                 console.log('Conversation created', e);
@@ -373,7 +374,7 @@ const handleNewMessage = (message) => {
 
 onUnmounted(() => {
     const uid = window.Laravel?.user?.id;
-    if (uid) {
+    if (uid && window.Echo) {
         window.Echo.leave(`dashboard.${uid}`);
     }
 });
