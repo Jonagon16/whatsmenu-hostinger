@@ -23,8 +23,8 @@
                     </div>
                     <!-- Links -->
                     <div class="flex space-x-8 items-center">
-                        <a href="#features" class="text-gray-500 hover:text-gray-900 font-medium">Beneficios</a>
-                        <a href="#pricing" class="text-gray-500 hover:text-gray-900 font-medium">Precios</a>
+                        <a href="{{ route('benefits') }}" class="text-gray-500 hover:text-gray-900 font-medium">Beneficios</a>
+                        <a href="{{ route('pricing') }}" class="text-gray-500 hover:text-gray-900 font-medium">Precios</a>
                         @auth
                             <a href="{{ url('/dashboard') }}" class="text-gray-900 font-bold hover:text-[#25D366]">Dashboard</a>
                         @else
@@ -59,7 +59,7 @@
                                    class="flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-2xl text-white bg-gray-900 hover:bg-emerald-600 md:text-lg shadow-xl shadow-gray-200 transition-all hover:scale-105">
                                     Empezar ahora <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                                 </a>
-                                <a href="#features"
+                                <a href="{{ route('benefits') }}"
                                    class="mt-3 sm:mt-0 flex items-center justify-center px-8 py-4 border-2 border-gray-100 text-base font-bold rounded-2xl text-gray-600 bg-gray-50 hover:bg-white transition-all md:text-lg">
                                     Ver beneficios
                                 </a>
@@ -174,8 +174,8 @@
                             <p class="text-sm text-gray-500 mt-1">© {{ date('Y') }} Todos los derechos reservados.</p>
                         </div>
                         <div class="flex space-x-6 text-sm text-gray-500">
-                            <a href="#" class="hover:text-gray-900">Términos y Condiciones</a>
-                            <a href="#" class="hover:text-gray-900">Política de Privacidad</a>
+                            <a href="{{ route('terms') }}" class="hover:text-gray-900">Términos y Condiciones</a>
+                            <a href="{{ route('privacy') }}" class="hover:text-gray-900">Política de Privacidad</a>
                             <a href="#" class="hover:text-gray-900">Contacto</a>
                         </div>
                     </div>

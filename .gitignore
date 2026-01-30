@@ -22,6 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/_legacy_solo_ejemplodefront_nousar/
 _legacy_solo_ejemplodefront_nousar/.env.local.example
 _legacy_solo_ejemplodefront_nousar/.gitattributes
 _legacy_solo_ejemplodefront_nousar/.gitignore
