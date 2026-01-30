@@ -14,6 +14,7 @@ class BotConfig extends Model
     protected $fillable = [
         'user_id',
         'whatsapp_verify_token',
+        'whatsapp_app_secret',
         'whatsapp_access_token',
         'whatsapp_phone_number_id',
         'whatsapp_business_account_id',

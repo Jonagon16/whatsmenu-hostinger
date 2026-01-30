@@ -12,3 +12,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard/chart-data', [\App\Http\Controllers\Api\DashboardController::class, 'chartData']);
     Route::get('/dashboard/activity', [\App\Http\Controllers\Api\DashboardController::class, 'activity']);
 });
+
+// WhatsApp Webhook
+Route::get('/webhooks/whatsapp', [\App\Http\Controllers\WhatsAppWebhookController::class, 'verify']);
+Route::post('/webhooks/whatsapp', [\App\Http\Controllers\WhatsAppWebhookController::class, 'receive']);

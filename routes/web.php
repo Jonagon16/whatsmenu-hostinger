@@ -22,3 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
 
+// Rutas de Prueba (Temporales)
+Route::prefix('test-panel')->group(function () {
+    Route::get('/', [\App\Http\Controllers\TestController::class, 'index'])->name('tests.jona');
+    Route::post('/reset', [\App\Http\Controllers\TestController::class, 'reset'])->name('tests.reset');
+    Route::post('/simulate', [\App\Http\Controllers\TestController::class, 'simulateWebhook'])->name('tests.simulate');
+});
+
