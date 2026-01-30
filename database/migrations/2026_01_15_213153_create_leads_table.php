@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('leads');
+
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->char('user_id', 36);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('phone')->unique();
             $table->timestamp('last_interaction')->nullable();
             $table->string('current_step')->nullable();
