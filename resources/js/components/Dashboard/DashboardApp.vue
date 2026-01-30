@@ -12,7 +12,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                <div class="lg:col-span-3">
+                <div class="lg:col-span-2">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 h-full">
                         <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4 flex items-center">
                             <span class="mr-2">📈</span> Interacciones (Últimos 7 días)
@@ -21,6 +21,10 @@
                             <canvas id="chart"></canvas>
                         </div>
                     </div>
+                </div>
+                <!-- Activity Table added here -->
+                <div class="lg:col-span-1">
+                     <ActivityTable :activities="activities" />
                 </div>
             </div>
         </div>

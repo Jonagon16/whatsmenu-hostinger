@@ -104,4 +104,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WhatsappLog::class);
     }
+
+    public function conversations()
+    {
+        return $this->hasManyThrough(Conversation::class, BotConfig::class);
+    }
 }

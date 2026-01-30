@@ -178,7 +178,8 @@ const loading = ref(true);
 const loadingMessages = ref(false);
 const sending = ref(false);
 const messagesContainer = ref(null);
-const userId = ref(window.Laravel?.user?.id || 1); // Assuming user ID is available in window.Laravel or similar
+// FIX: Get user ID from the global object injected in app.blade.php
+const userId = ref(window.Laravel?.user?.id);
 
 // Format time
 const formatTime = (dateStr) => {
@@ -312,12 +313,8 @@ onMounted(() => {
     fetchConversations();
     
     // Listen to private channel
-    // Assuming userId is available. If not, need to fetch user info first.
-    // Here we use a placeholder or assume global user object.
-    
-    // Try to get user ID from meta tag or window
-    const userIdMeta = document.querySelector('meta[name="user-id"]');
-    const uid = userIdMeta ? userIdMeta.content : (window.Laravel?.user?.id);
+    // Use the user ID injected from Blade
+    const uid = window.Laravel?.user?.id;
     
     if (uid) {
         console.log(`Listening on private-dashboard.${uid}`);
@@ -375,8 +372,7 @@ const handleNewMessage = (message) => {
 };
 
 onUnmounted(() => {
-    const userIdMeta = document.querySelector('meta[name="user-id"]');
-    const uid = userIdMeta ? userIdMeta.content : (window.Laravel?.user?.id);
+    const uid = window.Laravel?.user?.id;
     if (uid) {
         window.Echo.leave(`dashboard.${uid}`);
     }
