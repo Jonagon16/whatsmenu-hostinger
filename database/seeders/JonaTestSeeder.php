@@ -19,11 +19,13 @@ class JonaTestSeeder extends Seeder
     public function run(): void
     {
         // 1. Crear Usuario
-        $user = User::firstOrCreate(
+        // NOTA: Usamos updateOrCreate para evitar duplicados, y respetamos los campos reales de la tabla users.
+        $user = User::updateOrCreate(
             ['email' => 'jona@gmail.com'],
             [
-                'name' => 'Jona Test',
-                'password' => Hash::make('password'),
+                'first_name' => 'Jona',
+                'last_name' => 'Test',
+                'password_hash' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
         );
