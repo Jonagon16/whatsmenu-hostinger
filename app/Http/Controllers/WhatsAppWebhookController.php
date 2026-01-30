@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BotConfig;
 use App\Services\IncomingMessageHandler;
+use App\Jobs\ProcessWhatsAppMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
