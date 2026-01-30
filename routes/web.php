@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return response()->file(public_path('spa/index.html'));
+    return view('welcome');
 });
 
 // Dashboard route moved to controller
