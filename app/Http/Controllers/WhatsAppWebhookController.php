@@ -131,9 +131,14 @@ class WhatsAppWebhookController extends Controller
                 $contactName = $value['contacts'][0]['profile']['name'];
             }
 
+            // Detectar si es simulación verificando request global o una bandera en el payload si fuera posible
+            // Como $request no está disponible aquí, usamos request() helper o pasamos $request como parámetro.
+            // La mejor opción rápida es usar el helper request() de Laravel.
+            $isSimulation = request()->header('X-Is-Simulation');
+
             foreach ($value['messages'] as $message) {
                 // Delegar al Job (Asíncrono o Síncrono si es simulación)
-                if ($request->header('X-Is-Simulation')) {
+                if ($isSimulation) {
                      ProcessWhatsAppMessage::dispatchSync($botConfig, $message);
                 } else {
                      ProcessWhatsAppMessage::dispatch($botConfig, $message);

@@ -1,9 +1,14 @@
 # Pendientes Panel de Prueba (Test Panel)
 
 ## Problema Actual (Solucionado)
-El panel de pruebas `/test-panel` ya funciona correctamente. Se solucionaron problemas de firma inválida, clases no encontradas y ejecución de colas.
+El panel de pruebas `/test-panel` ya funciona correctamente. Se solucionaron problemas de firma inválida, clases no encontradas, variables indefinidas y ejecución de colas.
 
 ## Historial de Soluciones (30/01/2026)
+
+### 4. Error 500: Undefined variable $request
+- **Síntoma**: Al intentar simular, salía "Undefined variable $request" en `processPayload`.
+- **Causa**: El método `processPayload` no recibía `$request` como parámetro, pero intentaba usarlo para verificar el header de simulación.
+- **Solución**: Se cambió `$request->header(...)` por el helper global `request()->header(...)` dentro de `processPayload`.
 
 ### 3. Mensaje no aparecía en logs (Queue Issue)
 - **Síntoma**: El panel redirigía con 302 pero no se veía el mensaje en la tabla, aunque el log mostraba `WEBHOOK DEBUG HEADERS`.
