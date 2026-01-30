@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('bot_config');
+
         Schema::create('bot_config', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
