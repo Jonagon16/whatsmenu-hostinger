@@ -22,7 +22,7 @@
                         </span>
                     </div>
                     <!-- Links -->
-                    <div class="hidden md:flex space-x-8 items-center">
+                    <div class="flex space-x-8 items-center">
                         <a href="#features" class="text-gray-500 hover:text-gray-900 font-medium">Beneficios</a>
                         <a href="#pricing" class="text-gray-500 hover:text-gray-900 font-medium">Precios</a>
                         @auth
