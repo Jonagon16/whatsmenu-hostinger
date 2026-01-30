@@ -82,17 +82,35 @@ class TestController extends Controller
             ]
         ];
 
-        // Llamar internamente al controlador del Webhook
-        // Instanciamos el controlador manualmente o hacemos una petición HTTP interna.
-        // Para pruebas rápidas, petición HTTP interna a nuestra propia API.
+        // Buscar el bot para la firma
+        $bot = BotConfig::where('whatsapp_phone_number_id', $phoneId)->first();
         
-        $request = Request::create('/api/webhooks/whatsapp', 'POST', $payload);
-        
-        // Importante: Headers para firma si fuera necesario, pero en local a veces lo saltamos
-        // o configuramos el test para que use un secreto dummy.
+        $server = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ];
+
+        $jsonPayload = json_encode($payload);
+
+        if ($bot && $bot->whatsapp_app_secret) {
+            $signature = 'sha256=' . hash_hmac('sha256', $jsonPayload, $bot->whatsapp_app_secret);
+            $server['HTTP_X_HUB_SIGNATURE_256'] = $signature;
+        }
+
+        // Crear una instancia de Request compatible con lo que espera el controlador
+        // Pasamos el jsonPayload como content (7mo parámetro)
+        $webhookRequest = Request::create(
+            '/api/webhooks/whatsapp', 
+            'POST', 
+            [], 
+            [], 
+            [], 
+            $server,
+            $jsonPayload
+        );
         
         $controller = app(\App\Http\Controllers\WhatsAppWebhookController::class);
-        $response = $controller->receive($request);
+        $response = $controller->receive($webhookRequest);
 
         return redirect()->back()->with('success', 'Webhook simulado: ' . $text . ' (Status: ' . $response->getStatusCode() . ')');
     }

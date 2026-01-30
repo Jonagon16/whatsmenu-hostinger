@@ -29,6 +29,14 @@ class IncomingMessageHandler
     {
         $waId = $messageData['from'];
         $type = $messageData['type'];
+        $messageId = $messageData['id'] ?? null;
+
+        // 0. Idempotencia: Verificar si el mensaje ya fue procesado
+        if ($messageId && Message::where('whatsapp_message_id', $messageId)->exists()) {
+            Log::info("Mensaje duplicado ignorado: $messageId");
+            return;
+        }
+
         $body = $this->extractBody($messageData);
 
         // 1. Obtener o crear conversación

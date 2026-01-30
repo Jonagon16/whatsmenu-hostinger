@@ -92,6 +92,18 @@ class WhatsAppCloudApiService
      */
     protected function sendMessage(BotConfig $botConfig, string $to, array $messageData)
     {
+        // Rate Limiting: 50 mensajes por segundo por tenant (ajustable)
+        // Usamos cache key basada en el ID del bot
+        $key = 'whatsapp_rate_limit:' . $botConfig->id;
+        
+        if (RateLimiter::tooManyAttempts($key, 50)) {
+            // Si excede el límite, lanzamos excepción para que el Job reintente luego
+            $seconds = RateLimiter::availableIn($key);
+            throw new \Exception("Rate limit exceeded for tenant {$botConfig->id}. Retry in $seconds seconds.");
+        }
+        
+        RateLimiter::hit($key, 1); // 1 segundo de decay
+
         $url = "https://graph.facebook.com/{$this->graphVersion}/{$botConfig->whatsapp_phone_number_id}/messages";
 
         $payload = array_merge([

@@ -46,6 +46,12 @@ class WhatsAppWebhookController extends Controller
      */
     public function receive(Request $request)
     {
+        Log::info('WEBHOOK DEBUG HEADERS', [
+            'x-hub-signature-256' => $request->header('X-Hub-Signature-256'),
+            'content-type' => $request->header('Content-Type'),
+            'is_simulation' => $request->header('X-Is-Simulation'),
+        ]);
+
         $payload = $request->all();
         
         // Extraer phone_number_id para identificar al tenant
@@ -125,8 +131,9 @@ class WhatsAppWebhookController extends Controller
             }
 
             foreach ($value['messages'] as $message) {
-                // Procesar mensaje
-                $this->messageHandler->handle($botConfig, $message, $contactName);
+                // Delegar al Job (Asíncrono)
+                // En local, si QUEUE_CONNECTION=sync, se ejecuta al instante.
+                ProcessWhatsAppMessage::dispatch($botConfig, $message);
             }
         } elseif (isset($value['statuses'])) {
             // Actualización de estado de mensajes (sent, delivered, read)
