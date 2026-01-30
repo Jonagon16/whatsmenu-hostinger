@@ -89,4 +89,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(MenuTemplate::class);
     }
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
+    }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function whatsappLogs()
+    {
+        return $this->hasMany(WhatsappLog::class);
+    }
 }
