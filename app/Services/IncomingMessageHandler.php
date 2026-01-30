@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Events\ConversationCreated;
+use App\Events\ConversationUpdated;
+use App\Events\MessageReceived;
+use App\Events\MessageSent;
 use App\Models\BotConfig;
 use App\Models\Conversation;
 use App\Models\Menu;
@@ -21,7 +25,7 @@ class IncomingMessageHandler
     /**
      * Maneja un mensaje entrante de WhatsApp.
      */
-    public function handle(BotConfig $botConfig, array $messageData)
+    public function handle(BotConfig $botConfig, array $messageData, ?string $contactName = null)
     {
         $waId = $messageData['from'];
         $type = $messageData['type'];
@@ -32,6 +36,16 @@ class IncomingMessageHandler
             ['bot_config_id' => $botConfig->id, 'wa_id' => $waId],
             ['current_node_id' => 'root', 'metadata' => []]
         );
+
+        // Actualizar nombre si viene y no lo tenemos o cambió
+        if ($contactName && $conversation->display_name !== $contactName) {
+            $conversation->display_name = $contactName;
+            $conversation->save();
+        }
+
+        if ($conversation->wasRecentlyCreated) {
+            ConversationCreated::dispatch($conversation);
+        }
 
         // 2. Guardar mensaje entrante
         $this->logMessage($conversation, 'inbound', $type, $body, $messageData['id'] ?? null, $messageData);
@@ -213,7 +227,7 @@ class IncomingMessageHandler
      */
     protected function logMessage(Conversation $conversation, $direction, $type, $body, $waMessageId = null, $payload = null)
     {
-        Message::create([
+        $message = Message::create([
             'conversation_id' => $conversation->id,
             'direction' => $direction,
             'type' => $type,
@@ -225,6 +239,15 @@ class IncomingMessageHandler
 
         // Actualizar timestamp última interacción
         $conversation->touch();
+        
+        // Dispatch Events
+        if ($direction === 'inbound') {
+            MessageReceived::dispatch($message);
+        } else {
+            MessageSent::dispatch($message);
+        }
+        
+        ConversationUpdated::dispatch($conversation);
     }
 
     /**

@@ -118,21 +118,19 @@ class WhatsAppWebhookController extends Controller
         
         // Ver si hay mensajes
         if (isset($value['messages'])) {
-            foreach ($value['messages'] as $message) {
-                $waId = $message['from']; // ID del usuario (número)
-                $type = $message['type'];
-                
-                Log::info("Mensaje recibido para Tenant ID: {$botConfig->id}", [
-                    'from' => $waId,
-                    'type' => $type,
-                    'body' => $message
-                ]);
+            // Extraer info de contacto si viene
+            $contactName = null;
+            if (isset($value['contacts'][0]['profile']['name'])) {
+                $contactName = $value['contacts'][0]['profile']['name'];
+            }
 
-                // Aquí implementaremos la lógica de flujos en siguientes fases
-                // Ejemplo: WhatsAppIncomingJob::dispatch($botConfig, $message);
+            foreach ($value['messages'] as $message) {
+                // Procesar mensaje
+                $this->messageHandler->handle($botConfig, $message, $contactName);
             }
         } elseif (isset($value['statuses'])) {
             // Actualización de estado de mensajes (sent, delivered, read)
+            // TODO: Implementar manejo de estados
             Log::info("Actualización de estado para Tenant ID: {$botConfig->id}", [
                 'statuses' => $value['statuses']
             ]);

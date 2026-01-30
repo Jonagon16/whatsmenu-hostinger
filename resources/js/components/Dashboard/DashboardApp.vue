@@ -7,8 +7,12 @@
         <div v-else>
             <DashboardStats :stats="stats" />
             
+            <div class="mb-8">
+                <ChatDashboard />
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-3">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 h-full">
                         <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4 flex items-center">
                             <span class="mr-2">📈</span> Interacciones (Últimos 7 días)
@@ -17,9 +21,6 @@
                             <canvas id="chart"></canvas>
                         </div>
                     </div>
-                </div>
-                <div class="lg:col-span-1">
-                     <ActivityTable :activities="activities" />
                 </div>
             </div>
         </div>
@@ -33,6 +34,7 @@ import Chart from 'chart.js/auto';
 import DashboardStats from './DashboardStats.vue';
 import ActivityTable from './ActivityTable.vue';
 import NotificationCenter from './NotificationCenter.vue';
+import ChatDashboard from './ChatDashboard.vue';
 
 const stats = ref({});
 const activities = ref([]);
