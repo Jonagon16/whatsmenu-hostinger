@@ -88,6 +88,7 @@ class TestController extends Controller
         $server = [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_ACCEPT' => 'application/json',
+            'HTTP_X_IS_SIMULATION' => 'true', // Importante para dispatchSync
         ];
 
         $jsonPayload = json_encode($payload);

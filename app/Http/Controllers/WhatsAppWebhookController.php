@@ -132,9 +132,12 @@ class WhatsAppWebhookController extends Controller
             }
 
             foreach ($value['messages'] as $message) {
-                // Delegar al Job (Asíncrono)
-                // En local, si QUEUE_CONNECTION=sync, se ejecuta al instante.
-                ProcessWhatsAppMessage::dispatch($botConfig, $message);
+                // Delegar al Job (Asíncrono o Síncrono si es simulación)
+                if ($request->header('X-Is-Simulation')) {
+                     ProcessWhatsAppMessage::dispatchSync($botConfig, $message);
+                } else {
+                     ProcessWhatsAppMessage::dispatch($botConfig, $message);
+                }
             }
         } elseif (isset($value['statuses'])) {
             // Actualización de estado de mensajes (sent, delivered, read)
