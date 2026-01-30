@@ -12,21 +12,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bot_config', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->id();
-            $table->foreignId('user_id')
-          ->constrained('users')
-          ->onDelete('cascade');
-            
+
+            // UUID compatible con users.id (CHAR(36))
+            $table->char('user_id', 36);
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+
             $table->text('whatsapp_verify_token');
             $table->text('whatsapp_access_token');
             $table->text('whatsapp_phone_number_id');
             $table->text('whatsapp_business_account_id')->nullable();
-            
+
             $table->boolean('is_active')->default(true);
             $table->text('bot_name')->default('Mi Bot');
-            
+
             $table->timestampTz('last_interaction_at')->nullable();
-            
+
             $table->timestampsTz();
         });
     }
